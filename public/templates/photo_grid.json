@@ -1,0 +1,6 @@
+{
+    "id": "tpl_photo_grid",
+    "name": "3x3 摄影网格",
+    "content": "### Photo Grid Composition (九宫格摄影)\n编辑场景，3x3网格布局，冷灰色无缝背景。人物（面部特征与上传图片完全一致）身穿炭灰色无袖连衣裙。\n\n**灯光设置:** {{lighting}}。\n\n**照片细节包括 (Grid Details)：**\n1. {{grid_pose}}，画面风格统一 ({{lens_param}})；\n2. {{grid_pose}} ({{lens_param}})；\n3. {{grid_pose}} ({{lens_param}})；\n4. {{grid_pose}} ({{lens_param}})；\n5. {{grid_pose}} ({{lens_param}})；\n6. {{grid_pose}} ({{lens_param}})；\n7. {{grid_pose}} ({{lens_param}})；\n8. {{grid_pose}} ({{lens_param}})；\n9. {{grid_pose}} ({{lens_param}})。\n\n**后期处理:** 原始素材，平滑对比度，编辑柔化效果。",
+    "selections": {}
+}

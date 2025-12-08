@@ -1,0 +1,6 @@
+{
+    "id": "tpl_character_selfie",
+    "name": "人物趣味合影",
+    "content": "### Character Selfie (人物趣味合影)\n让 {{character_companion}} 站在男人旁边，{{action_pose}}，同时对着镜头露出调皮的表情。\n\n**背景:** 以 {{background_scene}} 为背景。\n\n**要求:** 保持自拍构图不变，让两个角色自然地融入画面，光影统一，互动自然。",
+    "selections": {}
+}

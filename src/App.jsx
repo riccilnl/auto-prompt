@@ -244,7 +244,7 @@ const INITIAL_BANKS = {
     options: ["全身立绘", "半身肖像", "动态战斗姿势", "背影回眸"]
   },
   grid_pose: { label: "静态动作", category: "visual", options: ["前景手指虚化", "目光锁定镜头", "单色下巴托手", "透过模糊肩带拍摄", "正面特写阴影", "斜角拍摄", "双手置于锁骨", "坐姿半身侧面", "侧面微距水滴", "闭眼仰头享受", "用手遮挡阳光", "回眸一笑", "吹泡泡糖特写"] },
-  
+
   camera_angle: {
     label: "拍摄角度",
     category: "visual",
@@ -316,7 +316,7 @@ const INITIAL_BANKS = {
     category: "item",
     options: ["Labubu艺术公仔", "暴力熊积木熊", "泡泡玛特Molly", "复古泰迪熊", "赛博朋克机械狗"]
   },
-  
+
   // Old ones preserved for compatibility or other templates
   lens_param: {
     label: "镜头参数",
@@ -369,7 +369,7 @@ const INITIAL_DEFAULTS = {
   background_style: "漫画网格笔记本",
   fashion_deconstruct: "整齐折叠的外套和精致的高跟鞋",
   toy_companion: "Labubu艺术公仔",
-  
+
   // Grid defaults
   grid_pose: "前景手指虚化",
 
@@ -514,24 +514,24 @@ const Variable = ({ id, index, config, currentVal, isOpen, onToggle, onSelect, o
   // Reset state when popover closes
   useEffect(() => {
     if (!isOpen) {
-        setIsAdding(false);
-        setCustomVal("");
+      setIsAdding(false);
+      setCustomVal("");
     }
   }, [isOpen]);
 
   if (!config) return <span className="text-red-400 bg-red-50 px-1 rounded border border-red-200 text-xs" title={`${t('undefined_var')}: ${id}`}>[{id}?]</span>;
 
   const handleAddSubmit = () => {
-      if (customVal.trim()) {
-          onAddCustom(customVal.trim());
-          setCustomVal("");
-          setIsAdding(false);
-      }
+    if (customVal.trim()) {
+      onAddCustom(customVal.trim());
+      setCustomVal("");
+      setIsAdding(false);
+    }
   };
 
   return (
     <div className="relative inline-block mx-1 align-baseline group text-base">
-      <span 
+      <span
         onClick={onToggle}
         className={`
           cursor-pointer px-2 py-0.5 rounded-md border transition-all duration-200 select-none font-medium
@@ -542,18 +542,18 @@ const Variable = ({ id, index, config, currentVal, isOpen, onToggle, onSelect, o
       >
         {currentVal || <span className={`${style.text} opacity-50 italic`}>{t('please_select')}</span>}
       </span>
-      
+
       {/* Popover - 词库选择器 */}
       {isOpen && (
-        <div 
+        <div
           ref={popoverRef}
           className="absolute left-0 top-full mt-2 w-72 bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden flex flex-col text-left"
           style={{ minWidth: '280px' }}
         >
           <div className="bg-gray-50 px-3 py-2 border-b border-gray-100 text-xs font-semibold text-gray-500 uppercase tracking-wider flex justify-between items-center">
             <span>{t('select')} {config.label} ({index + 1})</span>
-             <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${style.badgeBg} ${style.badgeText} font-medium`}>
-                {categories[categoryId]?.label || categoryId}
+            <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${style.badgeBg} ${style.badgeText} font-medium`}>
+              {categories[categoryId]?.label || categoryId}
             </span>
           </div>
           <div className="max-h-60 overflow-y-auto p-2 space-y-1">
@@ -561,11 +561,10 @@ const Variable = ({ id, index, config, currentVal, isOpen, onToggle, onSelect, o
               <button
                 key={idx}
                 onClick={() => onSelect(opt)}
-                className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${
-                  currentVal === opt 
-                    ? `${style.bgActive} ${style.text} font-medium` 
-                    : 'hover:bg-gray-50 text-gray-700'
-                }`}
+                className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${currentVal === opt
+                  ? `${style.bgActive} ${style.text} font-medium`
+                  : 'hover:bg-gray-50 text-gray-700'
+                  }`}
               >
                 {opt}
               </button>
@@ -575,39 +574,39 @@ const Variable = ({ id, index, config, currentVal, isOpen, onToggle, onSelect, o
               </div>
             )}
           </div>
-          
-           {/* Add Custom Option Footer */}
-           <div className="p-2 border-t border-gray-100 bg-gray-50">
-             {isAdding ? (
-                 <div className="flex gap-2">
-                     <input 
-                        autoFocus
-                        type="text"
-                        value={customVal}
-                        onChange={(e) => setCustomVal(e.target.value)}
-                        placeholder={t('add_option_placeholder')}
-                        className={`flex-1 min-w-0 px-2 py-1 text-sm border border-gray-300 rounded ${style.inputBorder} outline-none`}
-                        onKeyDown={(e) => e.key === 'Enter' && handleAddSubmit()}
-                     />
-                     <button 
-                        onClick={handleAddSubmit}
-                        disabled={!customVal.trim()}
-                        className={`px-2 py-1 ${style.btnBg} text-white rounded text-xs font-medium hover:opacity-90 disabled:opacity-50`}
-                     >
-                        {t('confirm')}
-                     </button>
-                 </div>
-             ) : (
-                 <button 
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        setIsAdding(true);
-                    }}
-                    className={`w-full flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs ${style.text} ${style.bg} ${style.hoverBg} rounded border ${style.border} transition-colors font-medium dashed`}
-                 >
-                    <Plus size={12} /> {t('add_custom_option')}
-                 </button>
-             )}
+
+          {/* Add Custom Option Footer */}
+          <div className="p-2 border-t border-gray-100 bg-gray-50">
+            {isAdding ? (
+              <div className="flex gap-2">
+                <input
+                  autoFocus
+                  type="text"
+                  value={customVal}
+                  onChange={(e) => setCustomVal(e.target.value)}
+                  placeholder={t('add_option_placeholder')}
+                  className={`flex-1 min-w-0 px-2 py-1 text-sm border border-gray-300 rounded ${style.inputBorder} outline-none`}
+                  onKeyDown={(e) => e.key === 'Enter' && handleAddSubmit()}
+                />
+                <button
+                  onClick={handleAddSubmit}
+                  disabled={!customVal.trim()}
+                  className={`px-2 py-1 ${style.btnBg} text-white rounded text-xs font-medium hover:opacity-90 disabled:opacity-50`}
+                >
+                  {t('confirm')}
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsAdding(true);
+                }}
+                className={`w-full flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs ${style.text} ${style.bg} ${style.hoverBg} rounded border ${style.border} transition-colors font-medium dashed`}
+              >
+                <Plus size={12} /> {t('add_custom_option')}
+              </button>
+            )}
           </div>
         </div>
       )}
@@ -630,18 +629,18 @@ const VisualEditor = React.forwardRef(({ value, onChange, banks, categories }, r
     const parts = text.split(/(\{\{[^{}\n]+\}\})/g);
     return parts.map((part, i) => {
       if (part.startsWith('{{') && part.endsWith('}}')) {
-         const key = part.slice(2, -2).trim();
-         const bank = banks[key];
-         const categoryId = bank?.category || 'other';
-         const colorKey = categories[categoryId]?.color || 'slate';
-         const style = CATEGORY_STYLES[colorKey];
-         
-         // Style needs to match font metrics exactly, so avoid padding/border that adds width
-         return (
-            <span key={i} className={`${style.bg} ${style.text} font-bold rounded-sm border-b-2 ${style.border}`}>
-               {part}
-            </span>
-         );
+        const key = part.slice(2, -2).trim();
+        const bank = banks[key];
+        const categoryId = bank?.category || 'other';
+        const colorKey = categories[categoryId]?.color || 'slate';
+        const style = CATEGORY_STYLES[colorKey];
+
+        // Style needs to match font metrics exactly, so avoid padding/border that adds width
+        return (
+          <span key={i} className={`${style.bg} ${style.text} font-bold rounded-sm border-b-2 ${style.border}`}>
+            {part}
+          </span>
+        );
       }
       return <span key={i}>{part}</span>;
     });
@@ -653,7 +652,7 @@ const VisualEditor = React.forwardRef(({ value, onChange, banks, categories }, r
       <pre
         ref={preRef}
         className="absolute inset-0 p-8 font-mono text-sm leading-relaxed whitespace-pre-wrap break-words pointer-events-none text-gray-800 overflow-hidden m-0"
-        style={{ fontFamily: 'Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace' }} 
+        style={{ fontFamily: 'Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace' }}
         aria-hidden="true"
       >
         {renderHighlights(value)}
@@ -676,136 +675,136 @@ const VisualEditor = React.forwardRef(({ value, onChange, banks, categories }, r
 
 // --- 组件：可折叠的词库组 ---
 const BankGroup = ({ bankKey, bank, onInsert, onDeleteOption, onAddOption, onDeleteBank, onUpdateBankCategory, categories, t }) => {
-    const [isCollapsed, setIsCollapsed] = useState(true);
-    const [isEditingCategory, setIsEditingCategory] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isEditingCategory, setIsEditingCategory] = useState(false);
 
-    const categoryId = bank.category || 'other';
-    const colorKey = categories[categoryId]?.color || 'slate';
-    const style = CATEGORY_STYLES[colorKey];
+  const categoryId = bank.category || 'other';
+  const colorKey = categories[categoryId]?.color || 'slate';
+  const style = CATEGORY_STYLES[colorKey];
 
-    const handleDragStart = (e) => {
-        e.dataTransfer.setData('text/plain', `{{${bankKey}}}`);
-        e.dataTransfer.effectAllowed = 'copy';
-    };
+  const handleDragStart = (e) => {
+    e.dataTransfer.setData('text/plain', `{{${bankKey}}}`);
+    e.dataTransfer.effectAllowed = 'copy';
+  };
 
-    return (
-        <div 
-            draggable="true"
-            onDragStart={handleDragStart}
-            className={`bg-white rounded-lg border ${style.border} relative group/card hover:shadow-sm transition-all overflow-hidden break-inside-avoid mb-3 cursor-grab active:cursor-grabbing`}
-        >
-            {/* Header / Collapsed View */}
-            <div 
-                className={`flex justify-between items-start p-3 cursor-pointer ${style.hoverBg} transition-colors`}
-                onClick={() => setIsCollapsed(!isCollapsed)}
-            >
-                <div className="flex items-start gap-2 overflow-hidden flex-1 pr-2">
-                    <div className="mt-0.5 flex-shrink-0">
-                        {isCollapsed ? <ChevronDown size={16} className={style.text} /> : <ChevronUp size={16} className={style.text} />}
-                    </div>
-                    <div className="flex flex-col min-w-0">
-                        <span className={`text-sm font-bold ${style.text} truncate leading-tight`}>{bank.label}</span>
-                        <code className="text-[10px] text-gray-400 truncate font-mono">{bankKey}</code>
-                    </div>
-                </div>
-                <div className="flex gap-1 items-center">
-                    <button 
-                        onClick={(e) => { e.stopPropagation(); onInsert(bankKey); }}
-                        title={t('insert')}
-                        className={`p-1 ${style.text} bg-white rounded border border-transparent ${style.hoverBorder} transition-colors flex items-center gap-1`}
-                    >
-                        <Plus size={14} /> 
-                        {!isCollapsed && <span className="text-xs font-medium">{t('insert')}</span>}
-                    </button>
-                    
-                    {!isCollapsed && (
-                        <>
-                            <button 
-                                onClick={(e) => { 
-                                    e.stopPropagation(); 
-                                    setIsEditingCategory(!isEditingCategory); 
-                                }}
-                                title={t('category_label')}
-                                className={`p-1 text-gray-400 ${style.hoverText} rounded transition-colors opacity-0 group-hover/card:opacity-100`}
-                            >
-                                <Settings size={14} />
-                            </button>
-                            <button 
-                                onClick={(e) => { e.stopPropagation(); onDeleteBank(bankKey); }}
-                                className="p-1 text-gray-400 hover:text-red-500 rounded transition-colors opacity-0 group-hover/card:opacity-100"
-                            >
-                                <Trash2 size={14} />
-                            </button>
-                        </>
-                    )}
-                </div>
-            </div>
-            
-            {/* Expanded Content */}
-            {!isCollapsed && (
-                <div className={`p-3 pt-0 border-t ${style.border} ${style.bg}`}>
-                    
-                    {/* Category Edit Mode */}
-                    {isEditingCategory && (
-                        <div className="mb-3 pt-3 pb-3 border-b border-gray-200/50">
-                            <label className="block text-[10px] uppercase font-bold text-gray-400 mb-1">{t('category_label')}</label>
-                            <select 
-                                value={categoryId}
-                                onChange={(e) => {
-                                    onUpdateBankCategory(bankKey, e.target.value);
-                                    setIsEditingCategory(false);
-                                }}
-                                className="w-full text-xs border border-gray-200 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white"
-                                onClick={(e) => e.stopPropagation()}
-                            >
-                                {Object.values(categories).map(cat => (
-                                    <option key={cat.id} value={cat.id}>{cat.label}</option>
-                                ))}
-                            </select>
-                        </div>
-                    )}
-
-                    <div className="flex flex-col gap-2 mb-3 mt-3">
-                        {bank.options.map((opt, idx) => (
-                            <div key={idx} className="group flex items-center justify-between gap-1 bg-white border border-gray-200 px-2 py-1 rounded text-xs text-gray-600 shadow-sm overflow-hidden">
-                                <span className="truncate" title={opt}>{opt}</span>
-                                <button 
-                                    onClick={() => onDeleteOption(bankKey, opt)}
-                                    className="opacity-0 group-hover:opacity-100 text-gray-300 hover:text-red-500 transition-opacity flex-shrink-0"
-                                >
-                                    <X size={12} />
-                                </button>
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className="flex gap-2">
-                        <input
-                            type="text"
-                            placeholder={t('add_option_placeholder')}
-                            className={`flex-1 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 ${style.inputRing} ${style.inputBorder}`}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                    onAddOption(bankKey, e.target.value);
-                                    e.target.value = '';
-                                }
-                            }}
-                        />
-                        <button 
-                            className="p-1 bg-white border border-gray-200 text-gray-500 rounded hover:bg-gray-50"
-                            onClick={(e) => {
-                                const input = e.currentTarget.previousSibling;
-                                onAddOption(bankKey, input.value);
-                                input.value = '';
-                            }}
-                        >
-                            <Plus size={16} />
-                        </button>
-                    </div>
-                </div>
-            )}
+  return (
+    <div
+      draggable="true"
+      onDragStart={handleDragStart}
+      className={`bg-white rounded-lg border ${style.border} relative group/card hover:shadow-sm transition-all overflow-hidden break-inside-avoid mb-3 cursor-grab active:cursor-grabbing`}
+    >
+      {/* Header / Collapsed View */}
+      <div
+        className={`flex justify-between items-start p-3 cursor-pointer ${style.hoverBg} transition-colors`}
+        onClick={() => setIsCollapsed(!isCollapsed)}
+      >
+        <div className="flex items-start gap-2 overflow-hidden flex-1 pr-2">
+          <div className="mt-0.5 flex-shrink-0">
+            {isCollapsed ? <ChevronDown size={16} className={style.text} /> : <ChevronUp size={16} className={style.text} />}
+          </div>
+          <div className="flex flex-col min-w-0">
+            <span className={`text-sm font-bold ${style.text} truncate leading-tight`}>{bank.label}</span>
+            <code className="text-[10px] text-gray-400 truncate font-mono">{bankKey}</code>
+          </div>
         </div>
-    );
+        <div className="flex gap-1 items-center">
+          <button
+            onClick={(e) => { e.stopPropagation(); onInsert(bankKey); }}
+            title={t('insert')}
+            className={`p-1 ${style.text} bg-white rounded border border-transparent ${style.hoverBorder} transition-colors flex items-center gap-1`}
+          >
+            <Plus size={14} />
+            {!isCollapsed && <span className="text-xs font-medium">{t('insert')}</span>}
+          </button>
+
+          {!isCollapsed && (
+            <>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsEditingCategory(!isEditingCategory);
+                }}
+                title={t('category_label')}
+                className={`p-1 text-gray-400 ${style.hoverText} rounded transition-colors opacity-0 group-hover/card:opacity-100`}
+              >
+                <Settings size={14} />
+              </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); onDeleteBank(bankKey); }}
+                className="p-1 text-gray-400 hover:text-red-500 rounded transition-colors opacity-0 group-hover/card:opacity-100"
+              >
+                <Trash2 size={14} />
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Expanded Content */}
+      {!isCollapsed && (
+        <div className={`p-3 pt-0 border-t ${style.border} ${style.bg}`}>
+
+          {/* Category Edit Mode */}
+          {isEditingCategory && (
+            <div className="mb-3 pt-3 pb-3 border-b border-gray-200/50">
+              <label className="block text-[10px] uppercase font-bold text-gray-400 mb-1">{t('category_label')}</label>
+              <select
+                value={categoryId}
+                onChange={(e) => {
+                  onUpdateBankCategory(bankKey, e.target.value);
+                  setIsEditingCategory(false);
+                }}
+                className="w-full text-xs border border-gray-200 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {Object.values(categories).map(cat => (
+                  <option key={cat.id} value={cat.id}>{cat.label}</option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          <div className="flex flex-col gap-2 mb-3 mt-3">
+            {bank.options.map((opt, idx) => (
+              <div key={idx} className="group flex items-center justify-between gap-1 bg-white border border-gray-200 px-2 py-1 rounded text-xs text-gray-600 shadow-sm overflow-hidden">
+                <span className="truncate" title={opt}>{opt}</span>
+                <button
+                  onClick={() => onDeleteOption(bankKey, opt)}
+                  className="opacity-0 group-hover:opacity-100 text-gray-300 hover:text-red-500 transition-opacity flex-shrink-0"
+                >
+                  <X size={12} />
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder={t('add_option_placeholder')}
+              className={`flex-1 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 ${style.inputRing} ${style.inputBorder}`}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  onAddOption(bankKey, e.target.value);
+                  e.target.value = '';
+                }
+              }}
+            />
+            <button
+              className="p-1 bg-white border border-gray-200 text-gray-500 rounded hover:bg-gray-50"
+              onClick={(e) => {
+                const input = e.currentTarget.previousSibling;
+                onAddOption(bankKey, input.value);
+                input.value = '';
+              }}
+            >
+              <Plus size={16} />
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 // --- Modal: Category Manager ---
@@ -814,7 +813,7 @@ const CategoryManager = ({ isOpen, onClose, categories, setCategories, banks, se
   const [newCatColor, setNewCatColor] = useState("slate");
   const [editingCatId, setEditingCatId] = useState(null);
   const [tempCatName, setTempCatName] = useState("");
-  
+
   const availableColors = Object.keys(CATEGORY_STYLES);
 
   if (!isOpen) return null;
@@ -822,7 +821,7 @@ const CategoryManager = ({ isOpen, onClose, categories, setCategories, banks, se
   const handleAddCategory = () => {
     if (!newCatName.trim()) return;
     const newId = `cat_${Date.now()}`;
-    
+
     setCategories(prev => ({
       ...prev,
       [newId]: { id: newId, label: newCatName, color: newCatColor }
@@ -833,44 +832,44 @@ const CategoryManager = ({ isOpen, onClose, categories, setCategories, banks, se
 
   const handleDeleteCategory = (catId) => {
     if (catId === 'other') return; // Cannot delete default
-    
+
     const catName = categories[catId].label;
     if (window.confirm(t('delete_category_confirm', { name: catName }))) {
-       // 1. Update banks to use 'other'
-       const updatedBanks = { ...banks };
-       Object.keys(updatedBanks).forEach(key => {
-           if (updatedBanks[key].category === catId) {
-               updatedBanks[key].category = 'other';
-           }
-       });
-       setBanks(updatedBanks);
+      // 1. Update banks to use 'other'
+      const updatedBanks = { ...banks };
+      Object.keys(updatedBanks).forEach(key => {
+        if (updatedBanks[key].category === catId) {
+          updatedBanks[key].category = 'other';
+        }
+      });
+      setBanks(updatedBanks);
 
-       // 2. Remove category
-       const updatedCats = { ...categories };
-       delete updatedCats[catId];
-       setCategories(updatedCats);
+      // 2. Remove category
+      const updatedCats = { ...categories };
+      delete updatedCats[catId];
+      setCategories(updatedCats);
     }
   };
 
   const startEditing = (cat) => {
-      setEditingCatId(cat.id);
-      setTempCatName(cat.label);
+    setEditingCatId(cat.id);
+    setTempCatName(cat.label);
   };
 
   const saveEditing = () => {
-      if (!tempCatName.trim()) return;
-      setCategories(prev => ({
-          ...prev,
-          [editingCatId]: { ...prev[editingCatId], label: tempCatName }
-      }));
-      setEditingCatId(null);
+    if (!tempCatName.trim()) return;
+    setCategories(prev => ({
+      ...prev,
+      [editingCatId]: { ...prev[editingCatId], label: tempCatName }
+    }));
+    setEditingCatId(null);
   };
 
   const changeColor = (catId, color) => {
-      setCategories(prev => ({
-          ...prev,
-          [catId]: { ...prev[catId], color }
-      }));
+    setCategories(prev => ({
+      ...prev,
+      [catId]: { ...prev[catId], color }
+    }));
   };
 
   return (
@@ -880,77 +879,77 @@ const CategoryManager = ({ isOpen, onClose, categories, setCategories, banks, se
           <h3 className="font-bold text-gray-800 flex items-center gap-2">
             <List size={18} /> {t('manage_categories')}
           </h3>
-          <button onClick={onClose} className="p-1 hover:bg-gray-200 rounded text-gray-500"><X size={18}/></button>
+          <button onClick={onClose} className="p-1 hover:bg-gray-200 rounded text-gray-500"><X size={18} /></button>
         </div>
-        
+
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
-           {/* Add New */}
-           <div className="flex gap-2 items-center mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
-              <input 
-                value={newCatName}
-                onChange={(e) => setNewCatName(e.target.value)}
-                placeholder={t('category_name_placeholder')}
-                className="flex-1 text-sm border border-gray-300 rounded px-2 py-1.5 focus:outline-none focus:border-indigo-500"
-              />
-              <select 
-                value={newCatColor}
-                onChange={(e) => setNewCatColor(e.target.value)}
-                className="text-sm border border-gray-300 rounded px-2 py-1.5 bg-white"
-              >
-                {availableColors.map(c => <option key={c} value={c}>{c}</option>)}
-              </select>
-              <button 
-                onClick={handleAddCategory}
-                disabled={!newCatName.trim()}
-                className="p-1.5 bg-indigo-600 text-white rounded disabled:opacity-50 hover:bg-indigo-700"
-              >
-                <Plus size={16} />
-              </button>
-           </div>
+          {/* Add New */}
+          <div className="flex gap-2 items-center mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <input
+              value={newCatName}
+              onChange={(e) => setNewCatName(e.target.value)}
+              placeholder={t('category_name_placeholder')}
+              className="flex-1 text-sm border border-gray-300 rounded px-2 py-1.5 focus:outline-none focus:border-indigo-500"
+            />
+            <select
+              value={newCatColor}
+              onChange={(e) => setNewCatColor(e.target.value)}
+              className="text-sm border border-gray-300 rounded px-2 py-1.5 bg-white"
+            >
+              {availableColors.map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
+            <button
+              onClick={handleAddCategory}
+              disabled={!newCatName.trim()}
+              className="p-1.5 bg-indigo-600 text-white rounded disabled:opacity-50 hover:bg-indigo-700"
+            >
+              <Plus size={16} />
+            </button>
+          </div>
 
-           {/* List */}
-           <div className="space-y-2">
-             {Object.values(categories).map(cat => (
-               <div key={cat.id} className="flex items-center gap-2 p-2 border border-gray-100 rounded bg-white hover:border-gray-200 transition-colors">
-                  <div className={`w-3 h-3 rounded-full ${CATEGORY_STYLES[cat.color].dotBg}`}></div>
-                  
-                  {editingCatId === cat.id ? (
-                      <input 
-                        autoFocus
-                        value={tempCatName}
-                        onChange={(e) => setTempCatName(e.target.value)}
-                        onBlur={saveEditing}
-                        onKeyDown={(e) => e.key === 'Enter' && saveEditing()}
-                        className="flex-1 text-sm border border-indigo-300 rounded px-1 py-0.5 outline-none"
-                      />
-                  ) : (
-                      <span className="flex-1 text-sm font-medium text-gray-700 truncate">{cat.label}</span>
-                  )}
+          {/* List */}
+          <div className="space-y-2">
+            {Object.values(categories).map(cat => (
+              <div key={cat.id} className="flex items-center gap-2 p-2 border border-gray-100 rounded bg-white hover:border-gray-200 transition-colors">
+                <div className={`w-3 h-3 rounded-full ${CATEGORY_STYLES[cat.color].dotBg}`}></div>
 
-                  <div className="flex items-center gap-1">
-                      {/* Color Picker */}
-                      <div className="relative group/color">
-                          <div className={`w-5 h-5 rounded cursor-pointer border border-gray-200 ${CATEGORY_STYLES[cat.color].bg}`}></div>
-                          <div className="absolute right-0 top-full mt-1 hidden group-hover/color:grid grid-cols-5 gap-1 p-2 bg-white border border-gray-200 shadow-lg rounded z-10 w-32">
-                              {availableColors.map(c => (
-                                  <div 
-                                    key={c} 
-                                    onClick={() => changeColor(cat.id, c)}
-                                    className={`w-4 h-4 rounded-full cursor-pointer hover:scale-110 transition-transform ${CATEGORY_STYLES[c].dotBg}`}
-                                    title={c}
-                                  />
-                              ))}
-                          </div>
-                      </div>
+                {editingCatId === cat.id ? (
+                  <input
+                    autoFocus
+                    value={tempCatName}
+                    onChange={(e) => setTempCatName(e.target.value)}
+                    onBlur={saveEditing}
+                    onKeyDown={(e) => e.key === 'Enter' && saveEditing()}
+                    className="flex-1 text-sm border border-indigo-300 rounded px-1 py-0.5 outline-none"
+                  />
+                ) : (
+                  <span className="flex-1 text-sm font-medium text-gray-700 truncate">{cat.label}</span>
+                )}
 
-                      <button onClick={() => startEditing(cat)} className="p-1 text-gray-400 hover:text-indigo-600 rounded"><Pencil size={14}/></button>
-                      {cat.id !== 'other' && (
-                          <button onClick={() => handleDeleteCategory(cat.id)} className="p-1 text-gray-400 hover:text-red-500 rounded"><Trash2 size={14}/></button>
-                      )}
+                <div className="flex items-center gap-1">
+                  {/* Color Picker */}
+                  <div className="relative group/color">
+                    <div className={`w-5 h-5 rounded cursor-pointer border border-gray-200 ${CATEGORY_STYLES[cat.color].bg}`}></div>
+                    <div className="absolute right-0 top-full mt-1 hidden group-hover/color:grid grid-cols-5 gap-1 p-2 bg-white border border-gray-200 shadow-lg rounded z-10 w-32">
+                      {availableColors.map(c => (
+                        <div
+                          key={c}
+                          onClick={() => changeColor(cat.id, c)}
+                          className={`w-4 h-4 rounded-full cursor-pointer hover:scale-110 transition-transform ${CATEGORY_STYLES[c].dotBg}`}
+                          title={c}
+                        />
+                      ))}
+                    </div>
                   </div>
-               </div>
-             ))}
-           </div>
+
+                  <button onClick={() => startEditing(cat)} className="p-1 text-gray-400 hover:text-indigo-600 rounded"><Pencil size={14} /></button>
+                  {cat.id !== 'other' && (
+                    <button onClick={() => handleDeleteCategory(cat.id)} className="p-1 text-gray-400 hover:text-red-500 rounded"><Trash2 size={14} /></button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -959,14 +958,14 @@ const CategoryManager = ({ isOpen, onClose, categories, setCategories, banks, se
 
 const App = () => {
   // Global State with Persistence
-  const [banks, setBanks] = useStickyState(INITIAL_BANKS, "app_banks_v6"); 
+  const [banks, setBanks] = useStickyState(INITIAL_BANKS, "app_banks_v6");
   const [defaults, setDefaults] = useStickyState(INITIAL_DEFAULTS, "app_defaults_v6");
-  const [language, setLanguage] = useStickyState("cn", "app_language_v1"); 
+  const [language, setLanguage] = useStickyState("cn", "app_language_v1");
   const [categories, setCategories] = useStickyState(INITIAL_CATEGORIES, "app_categories_v1"); // New state
-  
+
   const [templates, setTemplates] = useStickyState(INITIAL_TEMPLATES, "app_templates_v6");
   const [activeTemplateId, setActiveTemplateId] = useStickyState("tpl_default", "app_active_template_id_v3");
-  
+
   // UI State
   const [bankSidebarWidth, setBankSidebarWidth] = useStickyState(420, "app_bank_sidebar_width_v1"); // Default width increased to 420px for 2-column layout
   const [isResizing, setIsResizing] = useState(false);
@@ -976,7 +975,7 @@ const App = () => {
   const [copied, setCopied] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [isCategoryManagerOpen, setIsCategoryManagerOpen] = useState(false); // New UI state
-  
+
   // Add Bank State
   const [isAddingBank, setIsAddingBank] = useState(false);
   const [newBankLabel, setNewBankLabel] = useState("");
@@ -995,17 +994,68 @@ const App = () => {
   const t = (key, params = {}) => {
     let str = TRANSLATIONS[language][key] || key;
     Object.keys(params).forEach(k => {
-        str = str.replace(`{{${k}}}`, params[k]);
+      str = str.replace(`{{${k}}}`, params[k]);
     });
     return str;
   };
 
   // Fix initial categories if empty (migration safety)
   useEffect(() => {
-      if (!categories || Object.keys(categories).length === 0) {
-          setCategories(INITIAL_CATEGORIES);
-      }
+    if (!categories || Object.keys(categories).length === 0) {
+      setCategories(INITIAL_CATEGORIES);
+    }
   }, []);
+
+  // Load templates from JSON files on first mount
+  useEffect(() => {
+    const loadTemplatesFromJSON = async () => {
+      try {
+        // Check if templates are already loaded from localStorage
+        const storedTemplates = window.localStorage.getItem("app_templates_v6");
+        if (storedTemplates) {
+          // Templates already exist in localStorage, don't reload
+          return;
+        }
+
+        // Load template index
+        const indexResponse = await fetch('/templates/index.json');
+        if (!indexResponse.ok) {
+          console.warn('Template index not found, using default templates');
+          return;
+        }
+
+        const index = await indexResponse.json();
+        const loadedTemplates = [];
+
+        // Load each template file
+        for (const templateFile of index.templates) {
+          try {
+            const response = await fetch(`/templates/${templateFile}`);
+            if (response.ok) {
+              const template = await response.json();
+              loadedTemplates.push(template);
+            }
+          } catch (err) {
+            console.warn(`Failed to load template ${templateFile}:`, err);
+          }
+        }
+
+        // Only update if we successfully loaded templates
+        if (loadedTemplates.length > 0) {
+          setTemplates(loadedTemplates);
+          // Set first template as active if no active template
+          if (!activeTemplateId || !loadedTemplates.find(t => t.id === activeTemplateId)) {
+            setActiveTemplateId(loadedTemplates[0].id);
+          }
+        }
+      } catch (error) {
+        console.warn('Failed to load templates from JSON:', error);
+        // Fall back to INITIAL_TEMPLATES if loading fails
+      }
+    };
+
+    loadTemplatesFromJSON();
+  }, []); // Empty dependency array - only run once on mount
 
   // Derived State: Current Active Template
   const activeTemplate = templates.find(t => t.id === activeTemplateId) || templates[0];
@@ -1023,37 +1073,36 @@ const App = () => {
 
   // Resizing Logic
   useEffect(() => {
-      const handleMouseMove = (e) => {
-          if (!isResizing) return;
-          // Calculate new width based on mouse position relative to sidebar start
-          // Since sidebar starts after the 240px template sidebar
-          const newWidth = e.clientX - 240; 
-          if (newWidth > 280 && newWidth < 800) { // Min/Max constraints
-              setBankSidebarWidth(newWidth);
-          }
-      };
-
-      const handleMouseUp = () => {
-          setIsResizing(false);
-          document.body.style.cursor = 'default';
-          document.body.style.userSelect = 'auto';
-      };
-
-      if (isResizing) {
-          document.addEventListener('mousemove', handleMouseMove);
-          document.addEventListener('mouseup', handleMouseUp);
-          document.body.style.cursor = 'col-resize';
-          document.body.style.userSelect = 'none'; // Prevent text selection while resizing
+    const handleMouseMove = (e) => {
+      if (!isResizing) return;
+      // Calculate new width based on distance from right edge of window
+      const newWidth = window.innerWidth - e.clientX;
+      if (newWidth > 280 && newWidth < 800) { // Min/Max constraints
+        setBankSidebarWidth(newWidth);
       }
+    };
 
-      return () => {
-          document.removeEventListener('mousemove', handleMouseMove);
-          document.removeEventListener('mouseup', handleMouseUp);
-      };
+    const handleMouseUp = () => {
+      setIsResizing(false);
+      document.body.style.cursor = 'default';
+      document.body.style.userSelect = 'auto';
+    };
+
+    if (isResizing) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none'; // Prevent text selection while resizing
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
   }, [isResizing, setBankSidebarWidth]);
 
   const startResizing = () => {
-      setIsResizing(true);
+    setIsResizing(true);
   };
 
   // --- Template Actions ---
@@ -1072,16 +1121,16 @@ const App = () => {
   };
 
   const handleDuplicateTemplate = (t_item, e) => {
-      e.stopPropagation();
-      const newId = `tpl_${Date.now()}`;
-      const newTemplate = {
-          ...t_item,
-          id: newId,
-          name: `${t_item.name}${t('copy_suffix')}`,
-          selections: { ...t_item.selections }
-      };
-      setTemplates([...templates, newTemplate]);
-      setActiveTemplateId(newId);
+    e.stopPropagation();
+    const newId = `tpl_${Date.now()}`;
+    const newTemplate = {
+      ...t_item,
+      id: newId,
+      name: `${t_item.name}${t('copy_suffix')}`,
+      selections: { ...t_item.selections }
+    };
+    setTemplates([...templates, newTemplate]);
+    setActiveTemplateId(newId);
   };
 
   const handleDeleteTemplate = (id, e) => {
@@ -1107,7 +1156,7 @@ const App = () => {
 
   const saveTemplateName = () => {
     if (tempTemplateName.trim()) {
-      setTemplates(prev => prev.map(t => 
+      setTemplates(prev => prev.map(t =>
         t.id === editingTemplateNameId ? { ...t, name: tempTemplateName } : t
       ));
     }
@@ -1115,7 +1164,7 @@ const App = () => {
   };
 
   const updateActiveTemplateContent = (newContent) => {
-    setTemplates(prev => prev.map(t => 
+    setTemplates(prev => prev.map(t =>
       t.id === activeTemplateId ? { ...t, content: newContent } : t
     ));
   };
@@ -1142,12 +1191,12 @@ const App = () => {
 
   const handleAddCustomAndSelect = (key, index, newValue) => {
     if (!newValue || !newValue.trim()) return;
-    
+
     // 1. Add to bank if not exists
     if (!banks[key].options.includes(newValue)) {
-        handleAddOption(key, newValue);
+      handleAddOption(key, newValue);
     }
-    
+
     // 2. Select it
     handleSelect(key, index, newValue);
   };
@@ -1176,7 +1225,7 @@ const App = () => {
   const handleAddBank = () => {
     if (!newBankLabel.trim() || !newBankKey.trim()) return;
     const safeKey = newBankKey.trim().replace(/[^a-zA-Z0-9_]/g, '_').toLowerCase();
-    
+
     if (banks[safeKey]) {
       alert(t('alert_id_exists'));
       return;
@@ -1206,26 +1255,26 @@ const App = () => {
   };
 
   const handleUpdateBankCategory = (key, newCategory) => {
-      setBanks(prev => ({
-          ...prev,
-          [key]: {
-              ...prev[key],
-              category: newCategory
-          }
-      }));
+    setBanks(prev => ({
+      ...prev,
+      [key]: {
+        ...prev[key],
+        category: newCategory
+      }
+    }));
   };
 
   // --- Editor Actions ---
 
   const insertVariableToTemplate = (key) => {
     const textToInsert = ` {{${key}}} `;
-    
+
     if (!isEditing) {
       setIsEditing(true);
       setTimeout(() => {
         updateActiveTemplateContent(activeTemplate.content + textToInsert);
         // Simple scroll to bottom hack
-        if(textareaRef.current) textareaRef.current.scrollTop = textareaRef.current.scrollHeight;
+        if (textareaRef.current) textareaRef.current.scrollTop = textareaRef.current.scrollHeight;
       }, 50);
       return;
     };
@@ -1238,9 +1287,9 @@ const App = () => {
     const text = activeTemplate.content;
     const before = text.substring(0, start);
     const after = text.substring(end, text.length);
-    
+
     updateActiveTemplateContent(`${before}${textToInsert}${after}`);
-    
+
     setTimeout(() => {
       textarea.focus();
       const newPos = start + textToInsert.length;
@@ -1253,24 +1302,24 @@ const App = () => {
     const counters = {};
 
     finalString = finalString.replace(/{{(.*?)}}/g, (match, key) => {
-        const k = key.trim();
-        const idx = counters[k] || 0;
-        counters[k] = idx + 1;
+      const k = key.trim();
+      const idx = counters[k] || 0;
+      counters[k] = idx + 1;
 
-        const uniqueKey = `${k}-${idx}`;
-        // Prioritize selection, then default
-        return activeTemplate.selections[uniqueKey] || defaults[k] || match;
+      const uniqueKey = `${k}-${idx}`;
+      // Prioritize selection, then default
+      return activeTemplate.selections[uniqueKey] || defaults[k] || match;
     });
 
     const cleanText = finalString
-        .replace(/###\s/g, '')
-        .replace(/\*\*(.*?)\*\*/g, '$1')
-        .replace(/\n\s*\n/g, '\n\n');
+      .replace(/###\s/g, '')
+      .replace(/\*\*(.*?)\*\*/g, '$1')
+      .replace(/\n\s*\n/g, '\n\n');
 
     navigator.clipboard.writeText(cleanText).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    }).catch(() => {});
+    }).catch(() => { });
   };
 
   const handleExportImage = async () => {
@@ -1279,46 +1328,46 @@ const App = () => {
 
     setIsExporting(true);
     try {
-        const canvas = await html2canvas(element, {
-            scale: 2, // High resolution
-            useCORS: true,
-            backgroundColor: '#ffffff', // Ensure white background
-            logging: false,
-            onclone: (clonedDoc) => {
-                // You can manipulate the cloned document here if needed (e.g. hide scrollbars)
-                const clonedElement = clonedDoc.getElementById('preview-card');
-                if (clonedElement) {
-                   clonedElement.style.boxShadow = 'none'; // Optional: remove shadow for cleaner export
-                   clonedElement.style.border = 'none';
-                   
-                   // Add Footer Watermark
-                   const footer = clonedDoc.createElement('div');
-                   footer.style.marginTop = '40px';
-                   footer.style.paddingTop = '20px';
-                   footer.style.borderTop = '1px solid #f3f4f6';
-                   footer.style.textAlign = 'center';
-                   footer.style.color = '#9ca3af';
-                   footer.style.fontSize = '12px';
-                   footer.style.fontFamily = 'sans-serif';
-                   footer.innerText = '由“提示词填空器”制作生成，Made by 角落工作室';
-                   
-                   clonedElement.appendChild(footer);
-                }
-            }
-        });
+      const canvas = await html2canvas(element, {
+        scale: 2, // High resolution
+        useCORS: true,
+        backgroundColor: '#ffffff', // Ensure white background
+        logging: false,
+        onclone: (clonedDoc) => {
+          // You can manipulate the cloned document here if needed (e.g. hide scrollbars)
+          const clonedElement = clonedDoc.getElementById('preview-card');
+          if (clonedElement) {
+            clonedElement.style.boxShadow = 'none'; // Optional: remove shadow for cleaner export
+            clonedElement.style.border = 'none';
 
-        const image = canvas.toDataURL('image/png');
-        const link = document.createElement('a');
-        link.href = image;
-        link.download = `${activeTemplate.name.replace(/\s+/g, '_')}_prompt.png`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+            // Add Footer Watermark
+            const footer = clonedDoc.createElement('div');
+            footer.style.marginTop = '40px';
+            footer.style.paddingTop = '20px';
+            footer.style.borderTop = '1px solid #f3f4f6';
+            footer.style.textAlign = 'center';
+            footer.style.color = '#9ca3af';
+            footer.style.fontSize = '12px';
+            footer.style.fontFamily = 'sans-serif';
+            footer.innerText = '由“提示词填空器”制作生成，Made by 角落工作室';
+
+            clonedElement.appendChild(footer);
+          }
+        }
+      });
+
+      const image = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = image;
+      link.download = `${activeTemplate.name.replace(/\s+/g, '_')}_prompt.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } catch (err) {
-        console.error("Export failed:", err);
-        alert("Export failed. Please try again.");
+      console.error("Export failed:", err);
+      alert("Export failed. Please try again.");
     } finally {
-        setIsExporting(false);
+      setIsExporting(false);
     }
   };
 
@@ -1326,7 +1375,7 @@ const App = () => {
 
   const renderTemplateContent = () => {
     const lines = activeTemplate.content.split('\n');
-    const counters = {}; 
+    const counters = {};
 
     return lines.map((line, lineIdx) => {
       if (!line.trim()) return <div key={lineIdx} className="h-4"></div>;
@@ -1349,20 +1398,20 @@ const App = () => {
         );
         return <div key={lineIdx} className={className}>{content}</div>;
       } else if (/^\d+\.\s/.test(line.trim())) {
-         className = "ml-4 flex items-start gap-2 text-gray-700 mb-1";
-         const number = line.trim().match(/^\d+\./)[0];
-         const text = line.trim().replace(/^\d+\.\s/, '');
-         content = (
-            <>
-              <span className="font-mono text-gray-400 mt-0.5 min-w-[20px]">{number}</span>
-              <span className="flex-1">{parseLineWithVariables(text, lineIdx, counters)}</span>
-            </>
-         );
-         return <div key={lineIdx} className={className}>{content}</div>;
+        className = "ml-4 flex items-start gap-2 text-gray-700 mb-1";
+        const number = line.trim().match(/^\d+\./)[0];
+        const text = line.trim().replace(/^\d+\.\s/, '');
+        content = (
+          <>
+            <span className="font-mono text-gray-400 mt-0.5 min-w-[20px]">{number}</span>
+            <span className="flex-1">{parseLineWithVariables(text, lineIdx, counters)}</span>
+          </>
+        );
+        return <div key={lineIdx} className={className}>{content}</div>;
       }
 
       if (typeof content === 'string') {
-          return <Type key={lineIdx} className={className}>{parseLineWithVariables(content, lineIdx, counters)}</Type>;
+        return <Type key={lineIdx} className={className}>{parseLineWithVariables(content, lineIdx, counters)}</Type>;
       }
       return <Type key={lineIdx} className={className}>{content}</Type>;
     });
@@ -1375,12 +1424,12 @@ const App = () => {
         const key = part.slice(2, -2).trim();
         const varIndex = counters[key] || 0;
         counters[key] = varIndex + 1;
-        
+
         const uniqueKey = `${key}-${varIndex}`;
         const currentValue = activeTemplate.selections[uniqueKey] || defaults[key];
 
         return (
-          <Variable 
+          <Variable
             key={`${lineKeyPrefix}-${idx}`}
             id={key}
             index={varIndex}
@@ -1399,7 +1448,7 @@ const App = () => {
           />
         );
       }
-      
+
       const boldParts = part.split(/(\*\*.*?\*\*)/g);
       return boldParts.map((bp, bIdx) => {
         if (bp.startsWith('**') && bp.endsWith('**')) {
@@ -1412,7 +1461,7 @@ const App = () => {
 
   return (
     <div className="flex h-screen bg-gray-100 font-sans text-slate-800 overflow-hidden">
-      
+
       {/* --- 1. Templates Sidebar (Far Left) --- */}
       <div className="w-[240px] bg-gray-900 flex flex-col border-r border-gray-800 z-20 flex-shrink-0">
         <div className="p-4 border-b border-gray-800">
@@ -1422,7 +1471,7 @@ const App = () => {
               <h2 className="text-lg font-bold">{t('template_management')}</h2>
             </div>
             {/* Language Toggle */}
-            <button 
+            <button
               onClick={() => setLanguage(language === 'cn' ? 'en' : 'cn')}
               className="text-xs bg-gray-800 text-gray-400 px-2 py-1 rounded hover:text-white hover:bg-gray-700 transition-colors flex items-center gap-1"
             >
@@ -1435,61 +1484,61 @@ const App = () => {
 
         <div className="flex-1 overflow-y-auto p-2 space-y-1">
           {templates.map(t_item => (
-             <div 
-               key={t_item.id}
-               onClick={() => setActiveTemplateId(t_item.id)}
-               className={`
+            <div
+              key={t_item.id}
+              onClick={() => setActiveTemplateId(t_item.id)}
+              className={`
                  group flex items-center justify-between px-3 py-3 rounded-lg cursor-pointer transition-all
                  ${activeTemplateId === t_item.id ? 'bg-indigo-600 text-white shadow-md' : 'text-gray-400 hover:bg-gray-800 hover:text-gray-200'}
                `}
-             >
-               {editingTemplateNameId === t_item.id ? (
-                 <input 
-                   autoFocus
-                   type="text"
-                   value={tempTemplateName}
-                   onChange={(e) => setTempTemplateName(e.target.value)}
-                   onBlur={saveTemplateName}
-                   onKeyDown={(e) => e.key === 'Enter' && saveTemplateName()}
-                   className="bg-gray-700 text-white text-sm px-2 py-1 rounded w-full outline-none border border-indigo-400"
-                   onClick={(e) => e.stopPropagation()}
-                 />
-               ) : (
-                 <>
-                   <div className="flex items-center gap-2 overflow-hidden flex-1">
-                     <span className="truncate text-sm font-medium">{t_item.name}</span>
-                   </div>
-                   <div className="hidden group-hover:flex items-center gap-1">
-                     <button 
-                       title={t('rename')}
-                       onClick={(e) => startRenamingTemplate(t_item, e)}
-                       className="p-1 hover:bg-gray-700 rounded text-gray-400 hover:text-white"
-                     >
-                       <Pencil size={12} />
-                     </button>
-                     <button 
-                       title={t('duplicate')}
-                       onClick={(e) => handleDuplicateTemplate(t_item, e)}
-                       className="p-1 hover:bg-gray-700 rounded text-gray-400 hover:text-white"
-                     >
-                       <CopyIcon size={12} />
-                     </button>
-                     <button 
-                       title={t('delete')}
-                       onClick={(e) => handleDeleteTemplate(t_item.id, e)}
-                       className="p-1 hover:bg-red-900/50 rounded text-gray-400 hover:text-red-400"
-                     >
-                       <Trash2 size={12} />
-                     </button>
-                   </div>
-                 </>
-               )}
-             </div>
+            >
+              {editingTemplateNameId === t_item.id ? (
+                <input
+                  autoFocus
+                  type="text"
+                  value={tempTemplateName}
+                  onChange={(e) => setTempTemplateName(e.target.value)}
+                  onBlur={saveTemplateName}
+                  onKeyDown={(e) => e.key === 'Enter' && saveTemplateName()}
+                  className="bg-gray-700 text-white text-sm px-2 py-1 rounded w-full outline-none border border-indigo-400"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              ) : (
+                <>
+                  <div className="flex items-center gap-2 overflow-hidden flex-1">
+                    <span className="truncate text-sm font-medium">{t_item.name}</span>
+                  </div>
+                  <div className="hidden group-hover:flex items-center gap-1">
+                    <button
+                      title={t('rename')}
+                      onClick={(e) => startRenamingTemplate(t_item, e)}
+                      className="p-1 hover:bg-gray-700 rounded text-gray-400 hover:text-white"
+                    >
+                      <Pencil size={12} />
+                    </button>
+                    <button
+                      title={t('duplicate')}
+                      onClick={(e) => handleDuplicateTemplate(t_item, e)}
+                      className="p-1 hover:bg-gray-700 rounded text-gray-400 hover:text-white"
+                    >
+                      <CopyIcon size={12} />
+                    </button>
+                    <button
+                      title={t('delete')}
+                      onClick={(e) => handleDeleteTemplate(t_item.id, e)}
+                      className="p-1 hover:bg-red-900/50 rounded text-gray-400 hover:text-red-400"
+                    >
+                      <Trash2 size={12} />
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           ))}
         </div>
 
         <div className="p-3 border-t border-gray-800">
-          <button 
+          <button
             onClick={handleAddTemplate}
             className="w-full flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm py-2 rounded transition-colors"
           >
@@ -1498,226 +1547,311 @@ const App = () => {
         </div>
       </div>
 
-      {/* --- 2. Bank Sidebar (Middle Left) - UPDATED Resizable & Responsive Layout --- */}
-      <div 
+      {/* --- 2. Main Editor (Middle) --- */}
+      <div className="flex-1 flex flex-col h-full overflow-hidden bg-gray-50/50 relative">
+
+        {/* 顶部工具栏 */}
+        <div className="px-8 py-4 bg-white border-b border-gray-200 flex justify-between items-center shadow-sm z-20 h-[72px]">
+          <div>
+            <h1 className="text-xl font-bold text-gray-800">{activeTemplate.name}</h1>
+            <p className="text-xs text-gray-500 mt-0.5">
+              {isEditing ? t('editing_status') : t('preview_status')}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="flex bg-gray-100 p-1 rounded-lg border border-gray-200">
+              <button
+                onClick={() => setIsEditing(false)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${!isEditing ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+              >
+                <Eye size={16} /> {t('preview_mode')}
+              </button>
+              <button
+                onClick={() => setIsEditing(true)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${isEditing ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+              >
+                <Edit3 size={16} /> {t('edit_mode')}
+              </button>
+            </div>
+
+            <div className="h-6 w-px bg-gray-200 mx-1"></div>
+
+            <button
+              onClick={handleExportImage}
+              disabled={isEditing}
+              className={`
+                flex items-center gap-2 px-3 py-2 rounded-lg font-medium shadow-sm transition-all border
+                bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-indigo-600
+                disabled:opacity-50 disabled:cursor-not-allowed
+                `}
+              title={t('export_image')}
+            >
+              <ImageIcon size={18} />
+              <span className="hidden sm:inline">{t('export_image')}</span>
+            </button>
+
+            <button
+              onClick={handleCopy}
+              className={`
+                flex items-center gap-2 px-4 py-2 rounded-lg font-medium shadow-sm transition-all border
+                ${copied
+                  ? 'bg-green-50 border-green-200 text-green-700'
+                  : 'bg-gray-900 border-gray-900 text-white hover:bg-gray-800'}
+                `}
+            >
+              {copied ? <Check size={18} /> : <CopyIcon size={18} />}
+              {copied ? t('copied') : t('copy_result')}
+            </button>
+          </div>
+        </div>
+
+        {/* 核心内容区 */}
+        <div className="flex-1 overflow-hidden relative">
+          {isEditing ? (
+            <VisualEditor
+              ref={textareaRef}
+              value={activeTemplate.content}
+              onChange={(e) => updateActiveTemplateContent(e.target.value)}
+              banks={banks}
+              categories={categories}
+            />
+          ) : (
+            <div className="w-full h-full overflow-y-auto p-8">
+              <div
+                id="preview-card"
+                className="max-w-4xl mx-auto bg-white rounded-xl shadow-sm border border-gray-200 p-8 min-h-[800px]"
+              >
+                <div id="final-prompt-content" className="prose prose-slate max-w-none">
+                  {renderTemplateContent()}
+                </div>
+              </div>
+              <div className="h-20"></div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* --- 3. Bank Sidebar (Right) - UPDATED Resizable & Responsive Layout --- */}
+      <div
         ref={sidebarRef}
-        className="bg-white border-r border-gray-200 flex flex-col h-full shadow-sm z-10 flex-shrink-0 relative"
+        className="bg-white border-l border-gray-200 flex flex-col h-full shadow-sm z-10 flex-shrink-0 relative"
         style={{ width: `${bankSidebarWidth}px` }}
       >
         {/* Resizer Handle */}
-        <div 
-            className="absolute right-0 top-0 bottom-0 w-1.5 cursor-col-resize hover:bg-indigo-400 transition-colors z-50 group flex items-center justify-center"
-            onMouseDown={startResizing}
+        <div
+          className="absolute left-0 top-0 bottom-0 w-1.5 cursor-col-resize hover:bg-indigo-400 transition-colors z-50 group flex items-center justify-center"
+          onMouseDown={startResizing}
         >
-             {/* Visual handle indicator on hover */}
-            <div className="h-8 w-1 rounded-full bg-gray-300 group-hover:bg-indigo-200 transition-colors"></div>
+          {/* Visual handle indicator on hover */}
+          <div className="h-8 w-1 rounded-full bg-gray-300 group-hover:bg-indigo-200 transition-colors"></div>
         </div>
 
         <div className="p-5 border-b border-gray-100 bg-white">
           <div className="flex items-center justify-between mb-1">
             <div className="flex items-center gap-2">
-                <Settings className="w-5 h-5 text-gray-600" />
-                <h2 className="text-lg font-bold text-gray-800">{t('bank_config')}</h2>
+              <Settings className="w-5 h-5 text-gray-600" />
+              <h2 className="text-lg font-bold text-gray-800">{t('bank_config')}</h2>
             </div>
-            <button 
-                onClick={() => setIsCategoryManagerOpen(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors text-xs font-medium"
-                title={t('manage_categories')}
+            <button
+              onClick={() => setIsCategoryManagerOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors text-xs font-medium"
+              title={t('manage_categories')}
             >
-                <List size={14} />
-                {t('manage_categories')}
+              <List size={14} />
+              {t('manage_categories')}
             </button>
           </div>
           <p className="text-xs text-gray-500">{t('bank_subtitle')}</p>
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 pb-20">
-          
+
           {bankSidebarWidth >= 520 ? (
-             <div className="flex gap-4 items-start">
-               {/* Left Column */}
-               <div className="flex-1 flex flex-col gap-6 min-w-0">
-                  {Object.keys(categories).filter((_, i) => i % 2 === 0).map(catId => {
-                      const catBanks = Object.entries(banks).filter(([_, bank]) => (bank.category || 'other') === catId);
-                      if (catBanks.length === 0) return null;
-                      
-                      const catConfig = categories[catId];
-                      if (!catConfig) return null; 
+            <div className="flex gap-4 items-start">
+              {/* Left Column */}
+              <div className="flex-1 flex flex-col gap-6 min-w-0">
+                {Object.keys(categories).filter((_, i) => i % 2 === 0).map(catId => {
+                  const catBanks = Object.entries(banks).filter(([_, bank]) => (bank.category || 'other') === catId);
+                  if (catBanks.length === 0) return null;
 
-                      const style = CATEGORY_STYLES[catConfig.color] || CATEGORY_STYLES.slate;
+                  const catConfig = categories[catId];
+                  if (!catConfig) return null;
 
-                      return (
-                        <div key={catId} className="break-inside-avoid">
-                            <h3 className={`text-xs font-bold uppercase tracking-wider mb-2 ${style.text} flex items-center gap-1.5`}>
-                               <span className={`w-1.5 h-1.5 rounded-full ${style.dotBg}`}></span>
-                               {catConfig.label}
-                            </h3>
-                            <div>
-                                {catBanks.map(([key, bank]) => (
-                                    <BankGroup 
-                                        key={key}
-                                        bankKey={key} 
-                                        bank={bank} 
-                                        onInsert={insertVariableToTemplate}
-                                        onDeleteOption={handleDeleteOption}
-                                        onAddOption={handleAddOption}
-                                        onDeleteBank={handleDeleteBank}
-                                        onUpdateBankCategory={handleUpdateBankCategory}
-                                        categories={categories}
-                                        t={t}
-                                    />
-                                ))}
-                            </div>
-                        </div>
-                      );
-                  })}
-               </div>
-               
-               {/* Right Column */}
-               <div className="flex-1 flex flex-col gap-6 min-w-0">
-                  {Object.keys(categories).filter((_, i) => i % 2 === 1).map(catId => {
-                      const catBanks = Object.entries(banks).filter(([_, bank]) => (bank.category || 'other') === catId);
-                      if (catBanks.length === 0) return null;
-                      
-                      const catConfig = categories[catId];
-                      if (!catConfig) return null; 
+                  const style = CATEGORY_STYLES[catConfig.color] || CATEGORY_STYLES.slate;
 
-                      const style = CATEGORY_STYLES[catConfig.color] || CATEGORY_STYLES.slate;
+                  return (
+                    <div key={catId} className="break-inside-avoid">
+                      <h3 className={`text-xs font-bold uppercase tracking-wider mb-2 ${style.text} flex items-center gap-1.5`}>
+                        <span className={`w-1.5 h-1.5 rounded-full ${style.dotBg}`}></span>
+                        {catConfig.label}
+                      </h3>
+                      <div>
+                        {catBanks.map(([key, bank]) => (
+                          <BankGroup
+                            key={key}
+                            bankKey={key}
+                            bank={bank}
+                            onInsert={insertVariableToTemplate}
+                            onDeleteOption={handleDeleteOption}
+                            onAddOption={handleAddOption}
+                            onDeleteBank={handleDeleteBank}
+                            onUpdateBankCategory={handleUpdateBankCategory}
+                            categories={categories}
+                            t={t}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
 
-                      return (
-                        <div key={catId} className="break-inside-avoid">
-                            <h3 className={`text-xs font-bold uppercase tracking-wider mb-2 ${style.text} flex items-center gap-1.5`}>
-                               <span className={`w-1.5 h-1.5 rounded-full ${style.dotBg}`}></span>
-                               {catConfig.label}
-                            </h3>
-                            <div>
-                                {catBanks.map(([key, bank]) => (
-                                    <BankGroup 
-                                        key={key}
-                                        bankKey={key} 
-                                        bank={bank} 
-                                        onInsert={insertVariableToTemplate}
-                                        onDeleteOption={handleDeleteOption}
-                                        onAddOption={handleAddOption}
-                                        onDeleteBank={handleDeleteBank}
-                                        onUpdateBankCategory={handleUpdateBankCategory}
-                                        categories={categories}
-                                        t={t}
-                                    />
-                                ))}
-                            </div>
-                        </div>
-                      );
-                  })}
-               </div>
-             </div>
+              {/* Right Column */}
+              <div className="flex-1 flex flex-col gap-6 min-w-0">
+                {Object.keys(categories).filter((_, i) => i % 2 === 1).map(catId => {
+                  const catBanks = Object.entries(banks).filter(([_, bank]) => (bank.category || 'other') === catId);
+                  if (catBanks.length === 0) return null;
+
+                  const catConfig = categories[catId];
+                  if (!catConfig) return null;
+
+                  const style = CATEGORY_STYLES[catConfig.color] || CATEGORY_STYLES.slate;
+
+                  return (
+                    <div key={catId} className="break-inside-avoid">
+                      <h3 className={`text-xs font-bold uppercase tracking-wider mb-2 ${style.text} flex items-center gap-1.5`}>
+                        <span className={`w-1.5 h-1.5 rounded-full ${style.dotBg}`}></span>
+                        {catConfig.label}
+                      </h3>
+                      <div>
+                        {catBanks.map(([key, bank]) => (
+                          <BankGroup
+                            key={key}
+                            bankKey={key}
+                            bank={bank}
+                            onInsert={insertVariableToTemplate}
+                            onDeleteOption={handleDeleteOption}
+                            onAddOption={handleAddOption}
+                            onDeleteBank={handleDeleteBank}
+                            onUpdateBankCategory={handleUpdateBankCategory}
+                            categories={categories}
+                            t={t}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           ) : (
             <div className="flex flex-col gap-6">
-                {Object.keys(categories).map(catId => {
-                    const catBanks = Object.entries(banks).filter(([_, bank]) => (bank.category || 'other') === catId);
-                    if (catBanks.length === 0) return null;
-                    
-                    const catConfig = categories[catId];
-                    if (!catConfig) return null; 
+              {Object.keys(categories).map(catId => {
+                const catBanks = Object.entries(banks).filter(([_, bank]) => (bank.category || 'other') === catId);
+                if (catBanks.length === 0) return null;
 
-                    const style = CATEGORY_STYLES[catConfig.color] || CATEGORY_STYLES.slate;
+                const catConfig = categories[catId];
+                if (!catConfig) return null;
 
-                    return (
-                        <div key={catId} className="break-inside-avoid">
-                            <h3 className={`text-xs font-bold uppercase tracking-wider mb-2 ${style.text} flex items-center gap-1.5`}>
-                               <span className={`w-1.5 h-1.5 rounded-full ${style.dotBg}`}></span>
-                               {catConfig.label}
-                            </h3>
-                            <div>
-                                {catBanks.map(([key, bank]) => (
-                                    <BankGroup 
-                                        key={key}
-                                        bankKey={key} 
-                                        bank={bank} 
-                                        onInsert={insertVariableToTemplate}
-                                        onDeleteOption={handleDeleteOption}
-                                        onAddOption={handleAddOption}
-                                        onDeleteBank={handleDeleteBank}
-                                        onUpdateBankCategory={handleUpdateBankCategory}
-                                        categories={categories}
-                                        t={t}
-                                    />
-                                ))}
-                            </div>
-                        </div>
-                    );
-                })}
+                const style = CATEGORY_STYLES[catConfig.color] || CATEGORY_STYLES.slate;
+
+                return (
+                  <div key={catId} className="break-inside-avoid">
+                    <h3 className={`text-xs font-bold uppercase tracking-wider mb-2 ${style.text} flex items-center gap-1.5`}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${style.dotBg}`}></span>
+                      {catConfig.label}
+                    </h3>
+                    <div>
+                      {catBanks.map(([key, bank]) => (
+                        <BankGroup
+                          key={key}
+                          bankKey={key}
+                          bank={bank}
+                          onInsert={insertVariableToTemplate}
+                          onDeleteOption={handleDeleteOption}
+                          onAddOption={handleAddOption}
+                          onDeleteBank={handleDeleteBank}
+                          onUpdateBankCategory={handleUpdateBankCategory}
+                          categories={categories}
+                          t={t}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
 
-            {isAddingBank ? (
-                <div className="border-2 border-dashed border-indigo-200 rounded-lg p-4 bg-indigo-50/50 mt-4">
-                    <h4 className="text-xs font-bold text-indigo-900 mb-3 uppercase tracking-wide">{t('add_bank_title')}</h4>
-                    <div className="space-y-3">
-                        <div>
-                            <label className="block text-xs text-gray-500 mb-1">{t('label_name')}</label>
-                            <input 
-                                autoFocus
-                                type="text" 
-                                className="w-full text-sm border border-gray-300 rounded px-2 py-1.5 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none"
-                                placeholder={t('label_placeholder')}
-                                value={newBankLabel}
-                                onChange={e => setNewBankLabel(e.target.value)}
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-xs text-gray-500 mb-1">{t('id_name')}</label>
-                            <input 
-                                type="text" 
-                                className="w-full text-sm border border-gray-300 rounded px-2 py-1.5 font-mono focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none"
-                                placeholder={t('id_placeholder')}
-                                value={newBankKey}
-                                onChange={e => setNewBankKey(e.target.value)} 
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-xs text-gray-500 mb-1">{t('category_label')}</label>
-                            <select 
-                                value={newBankCategory}
-                                onChange={e => setNewBankCategory(e.target.value)}
-                                className="w-full text-sm border border-gray-300 rounded px-2 py-1.5 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none bg-white"
-                            >
-                                {Object.values(categories).map(cat => (
-                                    <option key={cat.id} value={cat.id}>{cat.label}</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="flex gap-2 pt-1">
-                            <button 
-                                onClick={handleAddBank}
-                                className="flex-1 bg-indigo-600 text-white text-xs py-1.5 rounded hover:bg-indigo-700 font-medium"
-                            >
-                                {t('confirm_add')}
-                            </button>
-                            <button 
-                                onClick={() => setIsAddingBank(false)}
-                                className="flex-1 bg-white border border-gray-300 text-gray-600 text-xs py-1.5 rounded hover:bg-gray-50"
-                            >
-                                {t('cancel')}
-                            </button>
-                        </div>
-                    </div>
+          {isAddingBank ? (
+            <div className="border-2 border-dashed border-indigo-200 rounded-lg p-4 bg-indigo-50/50 mt-4">
+              <h4 className="text-xs font-bold text-indigo-900 mb-3 uppercase tracking-wide">{t('add_bank_title')}</h4>
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">{t('label_name')}</label>
+                  <input
+                    autoFocus
+                    type="text"
+                    className="w-full text-sm border border-gray-300 rounded px-2 py-1.5 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none"
+                    placeholder={t('label_placeholder')}
+                    value={newBankLabel}
+                    onChange={e => setNewBankLabel(e.target.value)}
+                  />
                 </div>
-            ) : (
-                <button 
-                    onClick={() => setIsAddingBank(true)}
-                    className="w-full py-3 mt-4 border-2 border-dashed border-gray-200 rounded-lg text-gray-400 hover:text-indigo-500 hover:border-indigo-300 hover:bg-indigo-50 transition-all flex items-center justify-center gap-2 font-medium text-sm"
-                >
-                    <Plus size={18} />
-                    {t('add_bank_group')}
-                </button>
-            )}
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">{t('id_name')}</label>
+                  <input
+                    type="text"
+                    className="w-full text-sm border border-gray-300 rounded px-2 py-1.5 font-mono focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none"
+                    placeholder={t('id_placeholder')}
+                    value={newBankKey}
+                    onChange={e => setNewBankKey(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-gray-500 mb-1">{t('category_label')}</label>
+                  <select
+                    value={newBankCategory}
+                    onChange={e => setNewBankCategory(e.target.value)}
+                    className="w-full text-sm border border-gray-300 rounded px-2 py-1.5 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 outline-none bg-white"
+                  >
+                    {Object.values(categories).map(cat => (
+                      <option key={cat.id} value={cat.id}>{cat.label}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex gap-2 pt-1">
+                  <button
+                    onClick={handleAddBank}
+                    className="flex-1 bg-indigo-600 text-white text-xs py-1.5 rounded hover:bg-indigo-700 font-medium"
+                  >
+                    {t('confirm_add')}
+                  </button>
+                  <button
+                    onClick={() => setIsAddingBank(false)}
+                    className="flex-1 bg-white border border-gray-300 text-gray-600 text-xs py-1.5 rounded hover:bg-gray-50"
+                  >
+                    {t('cancel')}
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <button
+              onClick={() => setIsAddingBank(true)}
+              className="w-full py-3 mt-4 border-2 border-dashed border-gray-200 rounded-lg text-gray-400 hover:text-indigo-500 hover:border-indigo-300 hover:bg-indigo-50 transition-all flex items-center justify-center gap-2 font-medium text-sm"
+            >
+              <Plus size={18} />
+              {t('add_bank_group')}
+            </button>
+          )}
         </div>
       </div>
 
       {/* --- Category Manager Modal --- */}
-      <CategoryManager 
-        isOpen={isCategoryManagerOpen} 
+      <CategoryManager
+        isOpen={isCategoryManagerOpen}
         onClose={() => setIsCategoryManagerOpen(false)}
         categories={categories}
         setCategories={setCategories}
@@ -1725,93 +1859,9 @@ const App = () => {
         setBanks={setBanks}
         t={t}
       />
-
-      {/* --- 3. Main Editor (Right) --- */}
-      <div className="flex-1 flex flex-col h-full overflow-hidden bg-gray-50/50 relative">
-        
-        {/* 顶部工具栏 */}
-        <div className="px-8 py-4 bg-white border-b border-gray-200 flex justify-between items-center shadow-sm z-20 h-[72px]">
-          <div>
-            <h1 className="text-xl font-bold text-gray-800">{activeTemplate.name}</h1>
-            <p className="text-xs text-gray-500 mt-0.5">
-                {isEditing ? t('editing_status') : t('preview_status')}
-            </p>
-          </div>
-          
-          <div className="flex items-center gap-3">
-             <div className="flex bg-gray-100 p-1 rounded-lg border border-gray-200">
-                <button
-                    onClick={() => setIsEditing(false)}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${!isEditing ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
-                >
-                    <Eye size={16} /> {t('preview_mode')}
-                </button>
-                <button
-                    onClick={() => setIsEditing(true)}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${isEditing ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
-                >
-                    <Edit3 size={16} /> {t('edit_mode')}
-                </button>
-             </div>
-
-            <div className="h-6 w-px bg-gray-200 mx-1"></div>
-
-            <button
-                onClick={handleExportImage}
-                disabled={isEditing}
-                className={`
-                flex items-center gap-2 px-3 py-2 rounded-lg font-medium shadow-sm transition-all border
-                bg-white border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-indigo-600
-                disabled:opacity-50 disabled:cursor-not-allowed
-                `}
-                title={t('export_image')}
-            >
-                <ImageIcon size={18} />
-                <span className="hidden sm:inline">{t('export_image')}</span>
-            </button>
-
-            <button
-                onClick={handleCopy}
-                className={`
-                flex items-center gap-2 px-4 py-2 rounded-lg font-medium shadow-sm transition-all border
-                ${copied 
-                    ? 'bg-green-50 border-green-200 text-green-700' 
-                    : 'bg-gray-900 border-gray-900 text-white hover:bg-gray-800'}
-                `}
-            >
-                {copied ? <Check size={18} /> : <CopyIcon size={18} />}
-                {copied ? t('copied') : t('copy_result')}
-            </button>
-          </div>
-        </div>
-
-        {/* 核心内容区 */}
-        <div className="flex-1 overflow-hidden relative">
-            {isEditing ? (
-                <VisualEditor
-                    ref={textareaRef}
-                    value={activeTemplate.content}
-                    onChange={(e) => updateActiveTemplateContent(e.target.value)}
-                    banks={banks}
-                    categories={categories}
-                />
-            ) : (
-                <div className="w-full h-full overflow-y-auto p-8">
-                     <div 
-                        id="preview-card"
-                        className="max-w-4xl mx-auto bg-white rounded-xl shadow-sm border border-gray-200 p-8 min-h-[800px]"
-                     >
-                        <div id="final-prompt-content" className="prose prose-slate max-w-none">
-                            {renderTemplateContent()}
-                        </div>
-                     </div>
-                     <div className="h-20"></div>
-                </div>
-            )}
-        </div>
-      </div>
     </div>
   );
 };
 
 export default App;
+

@@ -1,0 +1,8 @@
+{
+    "templates": [
+        "default.json",
+        "photo_grid.json",
+        "fashion_moodboard.json",
+        "character_selfie.json"
+    ]
+}
