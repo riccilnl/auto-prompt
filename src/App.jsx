@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Copy, Plus, X, Settings, Check, Edit3, Eye, Trash2, FileText, Pencil, Copy as CopyIcon, Globe, ChevronDown, ChevronUp, GripVertical, Download, Image as ImageIcon, List } from 'lucide-react';
 import html2canvas from 'html2canvas';
+import ImportWizard from './components/ImportWizard';
 
 // --- 翻译配置 (Translations) ---
 const TRANSLATIONS = {
@@ -8,6 +9,7 @@ const TRANSLATIONS = {
     template_management: "模版管理",
     template_subtitle: "切换或管理不同 Prompt",
     new_template: "新建模版",
+    import_template: "导入文本 (智能提取)",
     bank_config: "词库配置",
     bank_subtitle: "所有模版共享同一套词库",
     preview_mode: "预览交互",
@@ -60,6 +62,7 @@ const TRANSLATIONS = {
     template_management: "Templates",
     template_subtitle: "Manage your Prompts",
     new_template: "New Template",
+    import_template: "Import Text (Smart Extract)",
     bank_config: "Word Banks",
     bank_subtitle: "Shared across all templates",
     preview_mode: "Preview",
@@ -975,6 +978,7 @@ const App = () => {
   const [copied, setCopied] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [isCategoryManagerOpen, setIsCategoryManagerOpen] = useState(false); // New UI state
+  const [isImportWizardOpen, setIsImportWizardOpen] = useState(false); // Smart Import state
 
   // Add Bank State
   const [isAddingBank, setIsAddingBank] = useState(false);
@@ -1106,6 +1110,49 @@ const App = () => {
   };
 
   // --- Template Actions ---
+
+  // --- Smart Import Handler ---
+  const handleSmartImport = (content, processedBanks) => {
+    // 1. Update Banks
+    const updatedBanks = { ...banks };
+    processedBanks.forEach(item => {
+      let bank = updatedBanks[item.bankId];
+
+      // If new bank, create it
+      if (!bank && item.isNewBank) {
+        updatedBanks[item.bankId] = {
+          label: item.bankName,
+          category: item.categoryId || 'other',
+          options: [] // Initialize empty
+        };
+        bank = updatedBanks[item.bankId];
+      }
+
+      // Add option if not exists
+      if (bank && !bank.options.includes(item.optionText)) {
+        // Create new array reference to trigger update
+        updatedBanks[item.bankId] = {
+          ...bank,
+          options: [...bank.options, item.optionText]
+        };
+      } else if (bank && bank.category !== item.categoryId) {
+        // Optional: Update category if user specified a different one for an existing bank?
+        // For now, respect existing bank category to avoid conflicts.
+      }
+    });
+    setBanks(updatedBanks);
+
+    // 2. Create Template
+    const newTemplate = {
+      id: `tpl_${Date.now()}`,
+      name: `${t('new_template')} (Imported)`,
+      content: content,
+      selections: {}
+    };
+
+    setTemplates([...templates, newTemplate]);
+    setActiveTemplateId(newTemplate.id);
+  };
 
   const handleAddTemplate = () => {
     const newId = `tpl_${Date.now()}`;
@@ -1544,6 +1591,13 @@ const App = () => {
           >
             <Plus size={16} /> {t('new_template')}
           </button>
+
+          <button
+            onClick={() => setIsImportWizardOpen(true)}
+            className="w-full flex items-center justify-center gap-2 mt-2 bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm py-2 rounded transition-colors"
+          >
+            <FileText size={16} /> {t('import_template')}
+          </button>
         </div>
       </div>
 
@@ -1848,6 +1902,16 @@ const App = () => {
           )}
         </div>
       </div>
+
+      {/* --- Import Wizard --- */}
+      <ImportWizard
+        isOpen={isImportWizardOpen}
+        onClose={() => setIsImportWizardOpen(false)}
+        onConfirm={handleSmartImport}
+        categories={categories}
+        existingBanks={banks}
+        t={t}
+      />
 
       {/* --- Category Manager Modal --- */}
       <CategoryManager
